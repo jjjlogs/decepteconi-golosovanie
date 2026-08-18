@@ -1,9 +1,53 @@
 (function () {
+  // ============================================================
+  // НАСТРОЙКА: вставь сюда URL твоего Google Apps Script Web App
+  // (получишь его после деплоя скрипта — см. README.md)
+  // ============================================================
+  const GOOGLE_SCRIPT_URL = 'ВСТАВЬ_СЮДА_URL_СКРИПТА';
+
   const root = document.getElementById('categoriesRoot');
   const tabsWrap = document.getElementById('catTabs');
   const toastEl = document.getElementById('toast');
 
-  let state = { categories: [], myVotes: {} };
+  const STORAGE_KEY = 'decepticon_awards_votes_v1';
+  const VOTER_KEY = 'decepticon_awards_voter_id_v1';
+
+  let state = { categories: NOMINEES_DATA, myVotes: loadMyVotes() };
+
+  // ---------- localStorage ----------
+  function loadMyVotes() {
+    try {
+      return JSON.parse(localStorage.getItem(STORAGE_KEY)) || {};
+    } catch {
+      return {};
+    }
+  }
+  function saveMyVotes() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state.myVotes));
+  }
+  function getVoterId() {
+    let id = localStorage.getItem(VOTER_KEY);
+    if (!id) {
+      id = 'v_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 10);
+      localStorage.setItem(VOTER_KEY, id);
+    }
+    return id;
+  }
+
+  // ---------- Отправка голоса в Google Таблицу ----------
+  function sendToGoogleSheet(payload) {
+    if (!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.indexOf('ВСТАВЬ_СЮДА') !== -1) {
+      console.warn('GOOGLE_SCRIPT_URL не настроен — голос сохранён только локально.');
+      return;
+    }
+    // Отправляем как text/plain, чтобы не было CORS-preflight (Apps Script его не поддерживает).
+    fetch(GOOGLE_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(payload),
+    }).catch((e) => {
+      console.error('Не удалось отправить голос в таблицу:', e);
+    });
+  }
 
   function showToast(msg) {
     toastEl.textContent = msg;
@@ -73,7 +117,7 @@
           </button>
         `;
         if (!myVote) {
-          card.querySelector('.btn-vote').addEventListener('click', () => vote(cat.id, { optionId: opt.id }));
+          card.querySelector('.btn-vote').addEventListener('click', () => vote(cat, { optionId: opt.id, label: opt.label }));
         }
         grid.appendChild(card);
       });
@@ -108,7 +152,7 @@
                 input.focus();
                 return;
               }
-              vote(cat.id, { customText: text });
+              vote(cat, { customText: text });
             };
             btn.addEventListener('click', submit);
             input.addEventListener('keydown', (e) => {
@@ -144,57 +188,69 @@
     onScroll();
   }
 
-  async function loadCategories() {
-    const res = await fetch('/api/categories');
-    const data = await res.json();
-    state.categories = data.categories;
-    state.myVotes = data.myVotes;
+  function vote(cat, payload) {
+    if (state.myVotes[cat.id]) {
+      showToast('Вы уже голосовали в этой номинации');
+      return;
+    }
+
+    let myVote;
+    if (payload.customText) {
+      const text = String(payload.customText).trim().slice(0, 200);
+      if (!text) return;
+      myVote = { type: 'custom', text };
+    } else {
+      myVote = { type: 'option', optionId: payload.optionId, label: payload.label };
+    }
+
+    state.myVotes[cat.id] = myVote;
+    saveMyVotes();
+
+    sendToGoogleSheet({
+      voterId: getVoterId(),
+      categoryId: cat.id,
+      categoryTitle: cat.title,
+      type: myVote.type,
+      optionId: myVote.optionId || '',
+      answer: voteLabel(myVote),
+      action: 'vote',
+      ts: new Date().toISOString(),
+    });
+
+    renderTabs();
+    renderCategories();
+    showToast('Голос учтён');
+  }
+
+  function unvote(categoryId) {
+    const cat = state.categories.find((c) => c.id === categoryId);
+    const existing = state.myVotes[categoryId];
+    if (!existing) return;
+
+    delete state.myVotes[categoryId];
+    saveMyVotes();
+
+    sendToGoogleSheet({
+      voterId: getVoterId(),
+      categoryId: categoryId,
+      categoryTitle: cat ? cat.title : '',
+      type: existing.type,
+      optionId: existing.optionId || '',
+      answer: voteLabel(existing),
+      action: 'unvote',
+      ts: new Date().toISOString(),
+    });
+
+    renderTabs();
+    renderCategories();
+    showToast('Выбор отменён');
+  }
+
+  function init() {
     renderTabs();
     renderCategories();
     setActiveTabOnScroll();
   }
 
-  async function vote(categoryId, payload) {
-    try {
-      const res = await fetch('/api/vote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ categoryId, ...payload }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        showToast(data.error || 'Не удалось проголосовать');
-        return;
-      }
-      state.myVotes = data.myVotes;
-      renderTabs();
-      renderCategories();
-      showToast('Голос учтён');
-    } catch (e) {
-      showToast('Ошибка сети. Попробуй ещё раз.');
-    }
-  }
-
-  async function unvote(categoryId) {
-    try {
-      const res = await fetch('/api/unvote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ categoryId }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        showToast(data.error || 'Не удалось отменить голос');
-        return;
-      }
-      state.myVotes = data.myVotes;
-      renderTabs();
-      renderCategories();
-      showToast('Выбор отменён');
-    } catch (e) {
-      showToast('Ошибка сети. Попробуй ещё раз.');
-    }
-  }
-
-  loadCategories();
+  init();
 })();
