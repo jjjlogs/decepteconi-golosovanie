@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>DECEPTICON AWARDS — результаты</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="img/logo.png" type="image/png">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .results-wrap{ max-width: 900px; margin: 0 auto; padding: 60px 24px 100px; }
+  .results-title{
+    font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(24px, 4vw, 34px); margin-bottom: 8px;
+  }
+  .results-sub{ color: var(--steel-dim); margin-bottom: 28px; font-size: 14px; }
+  .result-cat{
+    background: var(--surface); border: 1px solid var(--border);
+    clip-path: var(--clip-card); padding: 24px; margin-bottom: 20px;
+  }
+  .result-cat-title{
+    font-family: var(--font-industrial); font-weight: 700; font-size: 18px;
+    margin-bottom: 16px; display:flex; align-items:center; gap: 10px;
+  }
+  .result-cat-title::before{
+    content:''; width: 8px; height: 8px; background: var(--magenta-bright);
+    clip-path: polygon(50% 0, 100% 50%, 50% 100%, 0 50%); flex-shrink:0;
+  }
+  .result-row{
+    display:flex; align-items:center; gap: 14px; margin-bottom: 10px;
+    font-family: var(--font-body); font-size: 14px;
+  }
+  .result-label{ width: 220px; flex-shrink:0; color: var(--text); }
+  .result-row.leader .result-label{ color: var(--magenta-bright); font-weight: 700; }
+  .result-bar-track{
+    flex-grow:1; height: 18px; background: var(--surface-2);
+    position: relative; clip-path: var(--clip-chip); overflow:hidden;
+  }
+  .result-bar-fill{
+    height:100%; background: linear-gradient(100deg, var(--magenta), var(--violet));
+  }
+  .result-count{ width: 36px; text-align:right; flex-shrink:0; color: var(--steel); font-size: 13px; }
+  .empty-note{ color: var(--steel-dim); text-align:center; padding: 40px 0; }
+  .refresh-btn{
+    font-family: var(--font-industrial); font-weight: 700; font-size: 13px;
+    background: var(--surface-2); border: 1px solid var(--border-bright);
+    color: var(--text); padding: 9px 18px; cursor:pointer;
+    clip-path: var(--clip-chip); margin-bottom: 28px;
+  }
+  .refresh-btn:hover{ border-color: var(--magenta); }
+</style>
+</head>
+<body>
+
+<div class="noise-overlay"></div>
+
+<div class="results-wrap">
+  <h1 class="results-title">Результаты голосования</h1>
+  <p class="results-sub" id="resultsSub">Загрузка…</p>
+  <button class="refresh-btn" id="refreshBtn">Обновить</button>
+  <div id="resultsRoot"></div>
+</div>
+
+<script>
+(function () {
+  // ЗАМЕНИ на тот же URL, что вставлен в js/app.js
+  const GOOGLE_SCRIPT_URL = 'ВСТАВЬ_СЮДА_URL_СКРИПТА';
+
+  const resultsRoot = document.getElementById('resultsRoot');
+  const resultsSub = document.getElementById('resultsSub');
+
+  function escapeHtml(str) {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  function renderResults(results) {
+    resultsRoot.innerHTML = '';
+    const categories = Object.keys(results);
+
+    if (categories.length === 0) {
+      resultsRoot.innerHTML = '<p class="empty-note">Голосов пока нет.</p>';
+      return;
+    }
+
+    categories.forEach((catTitle) => {
+      const answers = results[catTitle];
+      const entries = Object.entries(answers).sort((a, b) => b[1] - a[1]);
+      const maxVotes = entries.length ? entries[0][1] : 0;
+
+      const block = document.createElement('div');
+      block.className = 'result-cat';
+      const title = document.createElement('div');
+      title.className = 'result-cat-title';
+      title.textContent = catTitle;
+      block.appendChild(title);
+
+      entries.forEach(([label, count], idx) => {
+        const row = document.createElement('div');
+        row.className = 'result-row' + (idx === 0 ? ' leader' : '');
+        const pct = maxVotes ? Math.round((count / maxVotes) * 100) : 0;
+        row.innerHTML = `
+          <span class="result-label">${escapeHtml(label)}</span>
+          <span class="result-bar-track"><span class="result-bar-fill" style="width:${pct}%"></span></span>
+          <span class="result-count">${count}</span>
+        `;
+        block.appendChild(row);
+      });
+
+      resultsRoot.appendChild(block);
+    });
+  }
+
+  function loadResults() {
+    resultsSub.textContent = 'Загрузка…';
+    fetch(GOOGLE_SCRIPT_URL + '?action=results')
+      .then((r) => r.json())
+      .then((data) => {
+        if (!data.ok) {
+          resultsSub.textContent = 'Ошибка загрузки результатов.';
+          return;
+        }
+        resultsSub.textContent = 'Обновлено: ' + new Date().toLocaleString('ru-RU');
+        renderResults(data.results);
+      })
+      .catch(() => {
+        resultsSub.textContent = 'Не удалось загрузить (проверь URL скрипта).';
+      });
+  }
+
+  document.getElementById('refreshBtn').addEventListener('click', loadResults);
+
+  loadResults();
+})();
+</script>
+
+</body>
+</html>
