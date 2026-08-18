@@ -3,7 +3,7 @@
   // НАСТРОЙКА: вставь сюда URL твоего Google Apps Script Web App
   // (получишь его после деплоя скрипта — см. README.md)
   // ============================================================
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdh0VG7Z3auJrIxe5-gxvJXMOya6eLCzZ0M9J98Wg9ETfCrwCA4CaTXVtwCfDoYpdP/exec';
+  const GOOGLE_SCRIPT_URL = 'ВСТАВЬ_СЮДА_URL_СКРИПТА';
 
   const root = document.getElementById('categoriesRoot');
   const tabsWrap = document.getElementById('catTabs');
@@ -11,6 +11,7 @@
 
   const STORAGE_KEY = 'decepticon_awards_votes_v1';
   const VOTER_KEY = 'decepticon_awards_voter_id_v1';
+  const NICKNAME_KEY = 'decepticon_awards_nickname_v1';
 
   let state = { categories: NOMINEES_DATA, myVotes: loadMyVotes() };
 
@@ -32,6 +33,42 @@
       localStorage.setItem(VOTER_KEY, id);
     }
     return id;
+  }
+  function getNickname() {
+    return localStorage.getItem(NICKNAME_KEY) || '';
+  }
+  function setNickname(nick) {
+    localStorage.setItem(NICKNAME_KEY, nick);
+  }
+
+  // ---------- Модалка с ником ----------
+  function initNicknameModal() {
+    const modal = document.getElementById('nicknameModal');
+    const input = document.getElementById('nicknameInput');
+    const submitBtn = document.getElementById('nicknameSubmit');
+
+    if (getNickname()) {
+      modal.classList.add('hidden');
+      return;
+    }
+
+    modal.classList.remove('hidden');
+    input.focus();
+
+    const submit = () => {
+      const nick = input.value.trim().slice(0, 40);
+      if (!nick) {
+        input.focus();
+        return;
+      }
+      setNickname(nick);
+      modal.classList.add('hidden');
+    };
+
+    submitBtn.addEventListener('click', submit);
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') submit();
+    });
   }
 
   // ---------- Отправка голоса в Google Таблицу ----------
@@ -208,6 +245,7 @@
 
     sendToGoogleSheet({
       voterId: getVoterId(),
+      nickname: getNickname(),
       categoryId: cat.id,
       categoryTitle: cat.title,
       type: myVote.type,
@@ -232,6 +270,7 @@
 
     sendToGoogleSheet({
       voterId: getVoterId(),
+      nickname: getNickname(),
       categoryId: categoryId,
       categoryTitle: cat ? cat.title : '',
       type: existing.type,
@@ -247,6 +286,7 @@
   }
 
   function init() {
+    initNicknameModal();
     renderTabs();
     renderCategories();
     setActiveTabOnScroll();
