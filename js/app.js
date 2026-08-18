@@ -3,7 +3,7 @@
   // НАСТРОЙКА: вставь сюда URL твоего Google Apps Script Web App
   // (получишь его после деплоя скрипта — см. README.md)
   // ============================================================
-  const GOOGLE_SCRIPT_URL = 'ВСТАВЬ_СЮДА_URL_СКРИПТА';
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzdh0VG7Z3auJrIxe5-gxvJXMOya6eLCzZ0M9J98Wg9ETfCrwCA4CaTXVtwCfDoYpdP/exec';
 
   const root = document.getElementById('categoriesRoot');
   const tabsWrap = document.getElementById('catTabs');
