@@ -1,0 +1,10 @@
+{
+  "name": "decepticon-awards",
+  "version": "1.0.0",
+  "description": "Сайт голосования DECEPTICON AWARDS",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {}
+}

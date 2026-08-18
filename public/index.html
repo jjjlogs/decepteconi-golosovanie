@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DECEPTICON AWARDS — голосование</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@500;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="/img/logo.png" type="image/png">
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<div class="noise-overlay"></div>
+
+<header class="site-header">
+  <div class="wrap header-inner">
+    <div class="logo">
+      <img src="/img/logo.png" alt="Decepticon Awards" class="logo-mark" />
+      <div class="logo-text">
+        <span class="logo-title">DECEPTICON</span>
+        <span class="logo-sub">AWARDS · 2026</span>
+      </div>
+    </div>
+    <nav class="header-nav">
+      <a href="#categories" class="nav-link">Номинации</a>
+      <a href="#about" class="nav-link">О премии</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <img src="/img/logo.png" alt="" class="hero-logo" aria-hidden="true" />
+  <div class="wrap hero-inner">
+    <p class="eyebrow">Голосование открыто · один голос в каждой номинации</p>
+    <h1 class="hero-title">
+      <span class="glitch-text" data-text="ЭРА ИСТИННОГО ЗАВОЗА">ЭРА ИСТИННОГО ЗАВОЗА</span>
+    </h1>
+    <p class="hero-desc">
+      Ежегодная премия арки. Выбери по одному варианту в каждой номинации —
+      или впиши свой, если в списке нет того самого. Результаты не
+      показываются заранее: узнать, кто победил, можно будет только
+      на церемонии.
+    </p>
+    <div class="hero-actions">
+      <a href="#categories" class="btn btn-primary">Перейти к голосованию</a>
+    </div>
+  </div>
+</section>
+
+<nav class="cat-tabs-wrap" id="catTabsWrap">
+  <div class="wrap cat-tabs" id="catTabs"></div>
+</nav>
+
+<main class="wrap" id="categories">
+  <div id="categoriesRoot" class="categories-root">
+    <div class="loading">Загружаем номинации…</div>
+  </div>
+</main>
+
+<section class="about" id="about">
+  <div class="wrap about-inner">
+    <h2>Как это работает</h2>
+    <div class="about-grid">
+      <div class="about-card">
+        <span class="about-num">01</span>
+        <h3>Выбирай номинацию</h3>
+        <p>Шесть категорий — от «Командира года» до «Мема года». Листай список или переходи по вкладкам сверху.</p>
+      </div>
+      <div class="about-card">
+        <span class="about-num">02</span>
+        <h3>Голосуй один раз</h3>
+        <p>В каждой номинации можно отдать только один голос. Передумал — жми «Отменить выбор» и голосуй заново.</p>
+      </div>
+      <div class="about-card">
+        <span class="about-num">03</span>
+        <h3>Результаты — сюрприз</h3>
+        <p>Кто лидирует, никто не видит до церемонии. Никаких процентов и подсказок — только твой собственный выбор.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="site-footer">
+  <div class="wrap footer-inner">
+    <div class="logo logo-small">
+      <img src="/img/logo.png" alt="Decepticon Awards" class="logo-mark" />
+      <span class="logo-title small">DECEPTICON AWARDS</span>
+    </div>
+    <p class="footer-note">Фан-проект. Все персонажи и номинации вымышлены ради удовольствия от голосования.</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script src="/js/app.js"></script>
+</body>
+</html>

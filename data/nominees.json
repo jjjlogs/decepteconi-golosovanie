@@ -1,0 +1,123 @@
+[
+  {
+    "id": "deceptiking",
+    "title": "Deceptiking",
+    "subtitle": "",
+    "options": [
+      { "id": "shaitan", "label": "Шайтан", "votes": 0 },
+      { "id": "makson", "label": "Максон", "votes": 0 },
+      { "id": "dcp", "label": "Дцп", "votes": 0 },
+      { "id": "yura", "label": "Юра", "votes": 0 },
+      { "id": "andro", "label": "Андро", "votes": 0 },
+      { "id": "lyoha", "label": "Лёха", "votes": 0 },
+      { "id": "zhabka", "label": "Жабка", "votes": 0 },
+      { "id": "ilya-pm", "label": "Илья пм", "votes": 0 }
+    ],
+    "allowCustom": true
+  },
+  {
+    "id": "deceptiqueen",
+    "title": "Deceptiqueen",
+    "subtitle": "",
+    "options": [
+      { "id": "mushko", "label": "Мушо", "votes": 0 },
+      { "id": "entamblood", "label": "Entamblood", "votes": 0 },
+      { "id": "nasto", "label": "Насто", "votes": 0 },
+      { "id": "ryzhaya", "label": "Рыжая", "votes": 0 }
+    ],
+    "allowCustom": true
+  },
+  {
+    "id": "zavoz-arki",
+    "title": "Завоз арки",
+    "subtitle": "",
+    "options": [
+      { "id": "andro-dasha", "label": "Андро съел бумажную Дашу", "votes": 0 },
+      { "id": "zhabka-golubi", "label": "Жабка ловит голубей", "votes": 0 },
+      { "id": "zhazhda-ph", "label": "Жажда Пх", "votes": 0 },
+      { "id": "serdca-za-lyubov", "label": "Сердца за любовь", "votes": 0 },
+      { "id": "larpceptikony", "label": "Larpсептиконы", "votes": 0 },
+      { "id": "monolog-shaitana", "label": "Монолог шайтана про копиум", "votes": 0 }
+    ],
+    "allowCustom": true
+  },
+  {
+    "id": "zavoznik-arki",
+    "title": "Завозник арки",
+    "subtitle": "",
+    "options": [
+      { "id": "timur-king", "label": "Тимур кинг", "votes": 0 },
+      { "id": "andro", "label": "Андро", "votes": 0 },
+      { "id": "shaitan2", "label": "Шайтан", "votes": 0 }
+    ],
+    "allowCustom": true
+  },
+  {
+    "id": "igra-arki",
+    "title": "Игра арки",
+    "subtitle": "",
+    "options": [
+      { "id": "dota2", "label": "Dota 2", "votes": 0 },
+      { "id": "shararam", "label": "Шарарам", "votes": 0 },
+      { "id": "roblox", "label": "Roblox", "votes": 0 },
+      { "id": "minecraft", "label": "Minecraft", "votes": 0 }
+    ],
+    "allowCustom": true
+  },
+  {
+    "id": "samyi-tupoi-arki",
+    "title": "Самый тупой персонаж арки",
+    "subtitle": "",
+    "options": [
+      { "id": "dcp2", "label": "Дцп", "votes": 0 },
+      { "id": "yura2", "label": "Юра", "votes": 0 },
+      { "id": "masha-schetchikova", "label": "Маша счетчикова", "votes": 0 },
+      { "id": "senseji", "label": "Сенсеи", "votes": 0 },
+      { "id": "gabriel", "label": "Gabriel", "votes": 0 }
+    ],
+    "allowCustom": true
+  },
+  {
+    "id": "legenda-arki",
+    "title": "Легенда арки",
+    "subtitle": "",
+    "options": [
+      { "id": "nasto2", "label": "Насто", "votes": 0 },
+      { "id": "zhabka2", "label": "Жабка", "votes": 0 },
+      { "id": "denchik", "label": "Денчик", "votes": 0 },
+      { "id": "ilya-pm2", "label": "Илья пм", "votes": 0 },
+      { "id": "vanya-uf", "label": "Ваня уф", "votes": 0 }
+    ],
+    "allowCustom": true
+  },
+  {
+    "id": "mem-arki",
+    "title": "Мем арки",
+    "subtitle": "",
+    "options": [
+      { "id": "ab-eto-8", "label": "Аб это 8", "votes": 0 },
+      { "id": "kreslo-meshok", "label": "Кресло-мешок", "votes": 0 },
+      { "id": "afrodiziak", "label": "Афродизиак", "votes": 0 },
+      { "id": "timur-tc", "label": "Тимур кинг обосрался в тц", "votes": 0 },
+      { "id": "deda", "label": "@деда", "votes": 0 },
+      { "id": "esli-by-sestra", "label": "Если бы у меня была сестра…", "votes": 0 },
+      { "id": "dobroe-utro", "label": "Всем доброе утро и хорошего настроения", "votes": 0 }
+    ],
+    "allowCustom": true
+  },
+  {
+    "id": "duo-arki",
+    "title": "Дуо арки",
+    "subtitle": "",
+    "options": [
+      { "id": "makson-shaitan", "label": "Максон и Шайтан", "votes": 0 },
+      { "id": "dcp-dasha", "label": "Дцп и Даша", "votes": 0 },
+      { "id": "andro-dcp", "label": "Андро и Дцп", "votes": 0 },
+      { "id": "andro-lyoha", "label": "Андро и Лёха", "votes": 0 },
+      { "id": "lyoha-denchik", "label": "Лёха и Денчик", "votes": 0 },
+      { "id": "mushko-shaitan", "label": "Мушо и Шайтан", "votes": 0 },
+      { "id": "dasha-yura", "label": "Даша и Юра", "votes": 0 }
+    ],
+    "allowCustom": true
+  }
+]
