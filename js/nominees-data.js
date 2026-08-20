@@ -52,7 +52,7 @@ const NOMINEES_DATA = [
       },
       {
         "id": "entamblood",
-        "label": "Entamblood"
+        "label": "Entomblood"
       },
       {
         "id": "nasto",
